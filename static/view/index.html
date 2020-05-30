@@ -22,8 +22,9 @@
       <div class="display">
           <label id="file-display">drop file here</label>
       </div>
-      <form action="/file/upload" method="post">
-          <input type="file" name="file" style="margin-left: 50px; width: 500px; border: aliceblue solid 1px">
+      <form action="/file/upload" method="POST" enctype="multipart/form-data">
+          <input type="file" name="file" style="margin-left: 50px; width: 400px; border: aliceblue solid 1px">
+          <button type="submit" style="margin-left: 20px; width: 70px;">upload</button>
       </form>
   </div>
 </body>
