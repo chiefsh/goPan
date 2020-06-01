@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/chiefsh/goPan/util"
 	"io"
@@ -58,4 +59,17 @@ func UploadHandler(w http.ResponseWriter, r *http.Request) {
 
 func UploadSucHandler(w http.ResponseWriter, r *http.Request)  {
 	io.WriteString(w, "upload success!")
+}
+
+func GetFileMetaHandler(w http.ResponseWriter, r *http.Request)  {
+	r.ParseForm()
+
+	filehash := r.Form["filehash"][0]
+	fmeta := meta.GetFileMeta(filehash)
+	data, err := json.Marshal(fmeta)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Write(data)
 }
