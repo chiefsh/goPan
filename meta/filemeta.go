@@ -23,3 +23,7 @@ func UpdateFileMeta(fmeta FileMeta) {
 func GetFileMeta(fileSha1 string) FileMeta {
 	return fileMetas[fileSha1]
 }
+
+func RemoveFileMeta(filesha1 string)  {
+	delete(fileMetas, filesha1)
+}

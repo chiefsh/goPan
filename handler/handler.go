@@ -96,3 +96,37 @@ func DownloadHandler(w http.ResponseWriter, r *http.Request)  {
 	w.Header().Set("Content-Descrption", "attachment;filename=\""+fm.FileName+"\"")
 	w.Write(data)
 }
+
+func FileMetaUpdateHandler(w http.ResponseWriter, r *http.Request)  {
+	r.ParseForm()
+
+	opType := r.Form.Get("op")
+	filesha1 := r.Form.Get("filehash")
+	newFileName := r.Form.Get("filename")
+
+	if opType != "0" {
+		w.WriteHeader(http.StatusForbidden)
+		return
+	}
+
+	if r.Method != "POST" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	curFileMeta := meta.GetFileMeta(filesha1)
+	curFileMeta.FileName = newFileName
+	meta.UpdateFileMeta(curFileMeta)
+	w.WriteHeader(http.StatusOK)
+}
+
+func FileDeleteHandler(w http.ResponseWriter, r *http.Request)  {
+	r.ParseForm()
+
+	filesha1 := r.Form.Get("filehash")
+	fMeta := meta.GetFileMeta(filesha1)
+	os.Remove(fMeta.Location)
+	meta.RemoveFileMeta(filesha1)
+
+	w.WriteHeader(http.StatusOK)
+}
